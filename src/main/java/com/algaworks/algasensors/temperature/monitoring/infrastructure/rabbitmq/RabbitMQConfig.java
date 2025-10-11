@@ -21,7 +21,7 @@ public class RabbitMQConfig {
 
     @Bean
     public Binding binding() {
-        /*Essa exchange foi craida no processing*/
+        /*Essa exchange foi criada no processing*/
         FanoutExchange fannoutExchange = ExchangeBuilder.fanoutExchange("temperature-processing.temperature-received.v1.e").build();
         return BindingBuilder.bind(queue()).to(fannoutExchange);
     }
