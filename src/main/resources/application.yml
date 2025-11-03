@@ -16,9 +16,13 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: update
-    show-sql: 'true'
+    show-sql: 'false'
   rabbitmq:
     host: localhost
     port: 5672
     username: rabbitmq
     password: rabbitmq
+    listener:
+      simple:
+        #Determina quantas mensagens um listener pode ter 'em mãos' por vez
+        prefetch: 4
