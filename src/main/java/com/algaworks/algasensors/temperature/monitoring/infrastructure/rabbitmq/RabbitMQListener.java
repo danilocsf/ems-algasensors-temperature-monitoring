@@ -21,17 +21,28 @@ public class RabbitMQListener {
 
     private final TemperatureMonitoringService temperatureMonitoringService;
 
-    @RabbitListener(queues = RabbitMQConfig.QUEUE, concurrency = "2-3")
+    @RabbitListener(queues = RabbitMQConfig.QUEUE_PROCESS_TEMPERATURE, concurrency = "2-3")
     @SneakyThrows
-    public void handle(@Payload TemperatureLogData temperatureLogData,
-                       @Headers Map<String, Object> headers
+    public void handleProcessTemperature(@Payload TemperatureLogData temperatureLogData,
+                                         @Headers Map<String, Object> headers
     ) {
         TSID sensorId = temperatureLogData.getSensorId();
         Double temperature = temperatureLogData.getValue();
-        log.info("Temperature updated: SensorId {} Temp {}", sensorId, temperature);
+        log.info("Temperature Received: SensorId {} Temp {}", sensorId, temperature);
         log.info("Headers: {}", headers);
         temperatureMonitoringService.processTemperatureReading(temperatureLogData);
 
+        Thread.sleep(Duration.ofSeconds(5));
+    }
+
+    @RabbitListener(queues = RabbitMQConfig.QUEUE_ALERTING, concurrency = "2-3")
+    @SneakyThrows
+    public void handleAlerting(@Payload TemperatureLogData temperatureLogData,
+                               @Headers Map<String, Object> headers
+    ) {
+        TSID sensorId = temperatureLogData.getSensorId();
+        Double temperature = temperatureLogData.getValue();
+        log.info("Alerting Temperature: SensorId {} Temp {}", sensorId, temperature);
         Thread.sleep(Duration.ofSeconds(5));
     }
 
