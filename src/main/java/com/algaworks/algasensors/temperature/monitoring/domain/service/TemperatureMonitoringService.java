@@ -24,7 +24,11 @@ public class TemperatureMonitoringService {
 
     @Transactional
     public void processTemperatureReading(TemperatureLogData temperatureLogData) {
-
+        log.info("processTemperatureReading");
+        if (temperatureLogData.getValue().equals(10.5)) {
+            log.error("Fake error");
+            throw new RuntimeException("Test error");
+        }
         sensorMonitoringRepository.findById(new SensorId(temperatureLogData.getSensorId()))
                 .ifPresentOrElse(
                         sensor -> handleSensorMonitoring(temperatureLogData, sensor),

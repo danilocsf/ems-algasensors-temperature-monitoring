@@ -26,3 +26,13 @@ spring:
       simple:
         #Determina quantas mensagens um listener pode ter 'em mãos' por vez
         prefetch: 4
+        retry:
+          enabled: true
+          #Intervalo de tempo entre uma tentativa e outra
+          initial-interval: 10s
+          max-interval: 30s
+          # A cada nova tentativa, dobra o número de tempo de espera - initial-interval até chegar no max-interval
+          multiplier: 2
+          #Número máximo de tentativas
+          #Na prática - 1 tentativa - 10 s / 2 tentativa - 20 s / 3 tentativa 30 s - 4 tentativa - 30 s - Finaliza as tentativas após a 4
+          max-attempts: 4

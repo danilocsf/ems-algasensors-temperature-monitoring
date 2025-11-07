@@ -33,8 +33,6 @@ public class RabbitMQListener {
         log.info("Temperature Received: SensorId {} Temp {}", sensorId, temperature);
         log.info("Headers: {}", headers);
         temperatureMonitoringService.processTemperatureReading(temperatureLogData);
-
-        Thread.sleep(Duration.ofSeconds(5));
     }
 
     @RabbitListener(queues = RabbitMQConfig.QUEUE_ALERTING, concurrency = "2-3")
